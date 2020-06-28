@@ -1,22 +1,13 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import SimpleHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs, urlparse
+import os
+
+script_dir = os.path.dirname(os.path.realpath(__file__))
+os.chdir(script_dir)
 
 address = ('localhost', 8080)
 
-class MyHTTPRequestHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        print('path = {}'.format(self.path))
-
-        parsed_path = urlparse(self.path)
-        print('parsed: path = {}, query = {}'.format(parsed_path.path, parse_qs(parsed_path.query)))
-
-        print('headers\r\n-----\r\n{}-----'.format(self.headers))
-
-        self.send_response(200)
-        self.send_header('Content-Type', 'text/plain; charset=utf-8')
-        self.end_headers()
-        self.wfile.write(b'Hello from do_GET')
-
+class MyHTTPRequestHandler(SimpleHTTPRequestHandler):
     def do_POST(self):
         print('path = {}'.format(self.path))
 
@@ -30,9 +21,9 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
         print('body = {}'.format(self.rfile.read(content_length).decode('utf-8')))
 
         self.send_response(200)
-        self.send_header('Content-Type', 'text/plain; charset=utf-8')
+        self.send_header('Content-Type', 'application/plain; charset=utf-8')
         self.end_headers()
-        self.wfile.write(b'Hello from do_POST')
+        self.wfile.write(b'{"ok":true}')
 
 
 with HTTPServer(address, MyHTTPRequestHandler) as server:
