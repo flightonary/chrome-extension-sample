@@ -12,7 +12,7 @@ Chromeのタブの外でフックする方法とタブ内にjavascriptをinjecti
 1. テスト用ページをロードする
 
 ```
-$ python ./testpage/httpserver.py &
+$ python3 ./testpage/httpserver.py &
 $ open http://localhost:8080
 ```
 
