@@ -2,6 +2,8 @@ window.addEventListener("load", main, false);
 
 function post_message(text_type) {
   chrome.storage.sync.get('api', function(data) {
+    console.log("post message!!!");
+
     var post_data = {
       channel: data.api.channel,
       username: data.api.username,
